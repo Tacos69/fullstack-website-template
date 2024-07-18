@@ -23,7 +23,7 @@ export class AuthService {
     if (!(await bcrypt.compare(password, user.password))) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
-    const payload = { sub: user.id };
+    const payload = { sub: user.id, roles: user.roles };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
@@ -40,7 +40,7 @@ export class AuthService {
       email,
       password: await bcrypt.hash(password, 10),
     });
-    const payload = { sub: user.id };
+    const payload = { sub: user.id, roles: user.roles };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
