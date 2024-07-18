@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ROLES_KEY } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
-import { TokenExpiredException } from 'src/modules/auth/exceptions/token-expired.exception';
+import extractTokenFromHeader from './utils/extract-token-from-header';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -21,9 +21,8 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const { user } = context.switchToHttp().getRequest();
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const token = extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -36,10 +35,5 @@ export class RolesGuard implements CanActivate {
     } catch {
       throw new UnauthorizedException();
     }
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }

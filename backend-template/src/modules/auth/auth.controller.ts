@@ -1,20 +1,7 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Request,
-  Res,
-  UseFilters,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ConfirmResetPasswordDto, LoginDto, RegisterDto, ResetPasswordDto } from './dto/auth.dto';
-import { AuthGuard } from '../../guards/auth.guard';
 import { Public } from 'src/decorators/public.decorator';
-import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
